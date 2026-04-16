@@ -1,7 +1,7 @@
 package event
 
 type Actor struct {
-	Id string `json:"id"`
+	Id int `json:"id"`
 	Login string `json:"login"`
 	DisplayLogin string `json:"display_login"`
 	GravatarId string `json:"gravatar_id"`
