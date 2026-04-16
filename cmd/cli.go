@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/sawsdev/github-user-activity/internal/eventList"
 	"github.com/spf13/cobra"
-	"github.com/sawsdev/github-user-activity/internal/fetch"
 )
 
 
@@ -18,13 +18,25 @@ var RootCmd = &cobra.Command{
 
 }
 
-var githubUserBaseUrl = "https://api.github.com/users/"
+var filterByEventType string
 
-
+func init(){
+	RootCmd.Flags().StringVarP(&filterByEventType, "eventype", "e", "all", "event type to filter by: all, starred, create, delete, fork, wiki, newIssue, commentIssue, push, release, pullRequest")
+}
 
 
 func fetchGithubUserActivity( cmd *cobra.Command, args [] string){
-	fmt.Println(args)
-	response := fetch.GetFromUrl(githubUserBaseUrl+"midudev/events")
-	fmt.Println(response)
+	if !eventList.IsValidEventType(filterByEventType) {
+		fmt.Println("The event type is not valid")
+		return
+	}
+	events, err :=eventList.GetUserEvents(args[0])
+	if err != ""{
+		fmt.Println("has occurred an error" + err)
+	}
+	repoEvents, repoList := eventList.GroupEventsByRepo(&events)
+
+
+	eventList.CreateActivityLog(repoEvents, repoList, eventList.GetEventType(filterByEventType))
+
 }
