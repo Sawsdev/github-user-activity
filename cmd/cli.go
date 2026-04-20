@@ -21,7 +21,7 @@ var RootCmd = &cobra.Command{
 var filterByEventType string
 
 func init(){
-	RootCmd.Flags().StringVarP(&filterByEventType, "eventype", "e", "all", "event type to filter by: all, starred, create, delete, fork, wiki, newIssue, commentIssue, push, release, pullRequest")
+	RootCmd.Flags().StringVarP(&filterByEventType, "eventtype", "e", "all", "event type to filter by: all, starred, create, delete, fork, wiki, newIssue, commentIssue, push, release, pullRequest")
 }
 
 
